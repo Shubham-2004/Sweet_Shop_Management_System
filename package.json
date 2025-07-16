@@ -1,10 +1,14 @@
 {
   "name": "sweet_shop_management_system",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000S\u0000w\u0000e\u0000e\u0000t\u0000 \u0000S\u0000h\u0000o\u0000p\u0000 \u0000M\u0000a\u0000n\u0000a\u0000g\u0000e\u0000m\u0000e\u0000n\u0000t\u0000 \u0000S\u0000y\u0000s\u0000t\u0000e\u0000m\u0000\r\u0000 \u0000",
+  "description": "A comprehensive Sweet Shop Management System built with JavaScript using Test-Driven Development",
   "main": "sweetshop.test.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node -e \"console.log('Open index.html in your browser to run the application'); process.exit(0)\"",
+    "dev": "live-server --port=8080",
+    "lint": "eslint *.js",
+    "format": "prettier --write *.js *.html"
   },
   "repository": {
     "type": "git",
@@ -19,5 +23,10 @@
   "homepage": "https://github.com/Shubham-2004/Sweet_Shop_Management_System#readme",
   "devDependencies": {
     "jest": "^30.0.4"
+  },
+  "dependencies": {
+    "eslint": "^9.31.0",
+    "live-server": "^1.2.2",
+    "prettier": "^3.6.2"
   }
 }

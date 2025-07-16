@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Shop Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Sweet Shop Management System</h1>
+            <p>Manage your sweet inventory with style and efficiency</p>
+        </header>
+
+        <main class="main-content">
+            <div id="message-container" role="alert" aria-live="polite"></div>
+
+            <section class="stats" aria-label="Inventory Statistics">
+                <div class="stat-card">
+                    <h3 id="total-sweets">0</h3>
+                    <p>Total Sweets</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="total-value">₹0</h3>
+                    <p>Inventory Value</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="low-stock">0</h3>
+                    <p>Low Stock Items</p>
+                </div>
+            </section>
+
+            <section class="controls" aria-label="Control Panel">
+                <div class="control-group">
+                    <h3>Add New Sweet</h3>
+                    <form onsubmit="event.preventDefault(); addSweet();" novalidate>
+                        <div class="form-row">
+                            <input type="text" id="add-name" placeholder="Sweet Name" required aria-label="Sweet Name">
+                            <select id="add-category" required aria-label="Category">
+                                <option value="">Select Category</option>
+                                <option value="Nut-Based">Nut-Based</option>
+                                <option value="Milk-Based">Milk-Based</option>
+                                <option value="Vegetable-Based">Vegetable-Based</option>
+                                <option value="Chocolate">Chocolate</option>
+                                <option value="Candy">Candy</option>
+                                <option value="Pastry">Pastry</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <input type="number" id="add-price" placeholder="Price (₹)" min="0" step="0.01" required aria-label="Price">
+                            <input type="number" id="add-quantity" placeholder="Quantity" min="0" required aria-label="Quantity">
+                        </div>
+                        <button type="submit" class="btn btn-success">Add Sweet</button>
+                    </form>
+                </div>
+
+                <div class="control-group">
+                    <h3>Search & Filter</h3>
+                    <form onsubmit="event.preventDefault(); searchSweets();" novalidate>
+                        <div class="form-row">
+                            <input type="text" id="search-name" placeholder="Search by name" aria-label="Search by name">
+                            <select id="search-category" aria-label="Filter by category">
+                                <option value="">All Categories</option>
+                                <option value="Nut-Based">Nut-Based</option>
+                                <option value="Milk-Based">Milk-Based</option>
+                                <option value="Vegetable-Based">Vegetable-Based</option>
+                                <option value="Chocolate">Chocolate</option>
+                                <option value="Candy">Candy</option>
+                                <option value="Pastry">Pastry</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <input type="number" id="search-min-price" placeholder="Min Price (₹)" min="0" step="0.01" aria-label="Minimum price">
+                            <input type="number" id="search-max-price" placeholder="Max Price (₹)" min="0" step="0.01" aria-label="Maximum price">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                </div>
+
+                <div class="control-group">
+                    <h3>Sort Options</h3>
+                    <form onsubmit="event.preventDefault(); sortSweets();" novalidate>
+                        <div class="form-row">
+                            <select id="sort-by" aria-label="Sort by">
+                                <option value="name">Sort by Name</option>
+                                <option value="price">Sort by Price</option>
+                                <option value="quantity">Sort by Quantity</option>
+                                <option value="category">Sort by Category</option>
+                            </select>
+                            <select id="sort-order" aria-label="Sort order">
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sort</button>
+                    </form>
+                </div>
+
+                <div class="control-group">
+                    <h3>Quick Actions</h3>
+                    <div class="form-row">
+                        <button class="btn btn-warning" onclick="showLowStock()">Show Low Stock</button>
+                        <button class="btn btn-primary" onclick="showAllSweets()">Show All</button>
+                    </div>
+                    <div class="form-row">
+                        <button class="btn btn-danger" onclick="clearAllSweets()">Clear All</button>
+                        <button class="btn btn-success" onclick="loadSampleData()">Load Sample Data</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="inventory-grid" id="inventory-grid" aria-label="Sweet Inventory">
+                <!-- Sweet cards will be dynamically generated here -->
+            </section>
+        </main>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="purchase-modal" class="modal" role="dialog" aria-labelledby="purchase-modal-title" aria-modal="true">
+        <div class="modal-content">
+            <h3 id="purchase-modal-title">Purchase Sweet</h3>
+            <p id="purchase-sweet-name" aria-live="polite"></p>
+            <div class="form-row">
+                <label for="purchase-quantity">Quantity:</label>
+                <input type="number" id="purchase-quantity" min="1" value="1" aria-label="Purchase quantity">
+            </div>
+            <p id="purchase-total" aria-live="polite"></p>
+            <div class="modal-actions">
+                <button class="btn btn-success" onclick="confirmPurchase()">Confirm Purchase</button>
+                <button class="btn btn-danger" onclick="closePurchaseModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restock Modal -->
+    <div id="restock-modal" class="modal" role="dialog" aria-labelledby="restock-modal-title" aria-modal="true">
+        <div class="modal-content">
+            <h3 id="restock-modal-title">Restock Sweet</h3>
+            <p id="restock-sweet-name" aria-live="polite"></p>
+            <div class="form-row">
+                <label for="restock-quantity">Add Quantity:</label>
+                <input type="number" id="restock-quantity" min="1" value="10" aria-label="Restock quantity">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-success" onclick="confirmRestock()">Confirm Restock</button>
+                <button class="btn btn-danger" onclick="closeRestockModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    </body>
+</html>
