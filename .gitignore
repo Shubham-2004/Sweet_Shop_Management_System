@@ -106,5 +106,3 @@ temp/
 test-results/
 junit.xml
 
-# Sweet Shop Management System specific
-sweetshop.js
