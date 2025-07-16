@@ -1,4 +1,3 @@
-
 class TestRunner {
     constructor() {
         this.tests = [];
@@ -34,22 +33,22 @@ class TestRunner {
     }
 
     run() {
-        console.log(' Running Sweet Shop Management System Tests...\n');
+        console.log('🧪 Running Sweet Shop Management System Tests...\n');
         
         this.tests.forEach(({ description, testFunction }) => {
             try {
                 testFunction();
-                console.log(`Passed ${description}`);
+                console.log(`✅ ${description}`);
                 this.passed++;
             } catch (error) {
-                console.log(`Failed ${description}`);
+                console.log(`❌ ${description}`);
                 console.log(`   Error: ${error.message}`);
                 this.failed++;
             }
         });
 
-        console.log(`\nTest Results: ${this.passed} passed, ${this.failed} failed`);
-        console.log(`Success Rate: ${((this.passed / (this.passed + this.failed)) * 100).toFixed(1)}%`);
+        console.log(`\n📊 Test Results: ${this.passed} passed, ${this.failed} failed`);
+        console.log(`📈 Success Rate: ${((this.passed / (this.passed + this.failed)) * 100).toFixed(1)}%`);
     }
 }
 
@@ -116,6 +115,64 @@ runner.test('SweetShop - should throw error when deleting non-existent sweet', (
     const shop = new SweetShop();
     runner.assertThrows(() => shop.deleteSweet(999), 'Sweet not found');
 });
+
+// Test Suite for SweetShop - View Sweets
+runner.test('SweetShop - should get all sweets', () => {
+    const shop = new SweetShop();
+    shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+    shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+    
+    const sweets = shop.getAllSweets();
+    runner.assertEqual(sweets.length, 2);
+});
+
+runner.test('SweetShop - should get specific sweet by ID', () => {
+    const shop = new SweetShop();
+    const sweet = shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+    const retrieved = shop.getSweet(sweet.id);
+    
+    runner.assertEqual(retrieved.name, 'Kaju Katli');
+});
+
+runner.test('SweetShop - should throw error for non-existent sweet ID', () => {
+    const shop = new SweetShop();
+    runner.assertThrows(() => shop.getSweet(999), 'Sweet not found');
+});
+
+// Test Suite for Search Features
+runner.test('SweetShop - should search by name', () => {
+    const shop = new SweetShop();
+    shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+    shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+    shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 50);
+    
+    const results = shop.searchByName('Kaju');
+    runner.assertEqual(results.length, 1);
+    runner.assertEqual(results[0].name, 'Kaju Katli');
+});
+
+runner.test('SweetShop - should search by category', () => {
+    const shop = new SweetShop();
+    shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+    shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+    shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 50);
+    
+    const results = shop.searchByCategory('Milk');
+    runner.assertEqual(results.length, 1);
+    runner.assertEqual(results[0].name, 'Gulab Jamun');
+});
+
+runner.test('SweetShop - should search by price range', () => {
+    const shop = new SweetShop();
+    shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+    shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+    shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 50);
+    
+    const results = shop.searchByPriceRange(20, 40);
+    runner.assertEqual(results.length, 1);
+    runner.assertEqual(results[0].name, 'Gajar Halwa');
+});
+
 
 // Run all tests
 runner.run();

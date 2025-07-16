@@ -1,6 +1,3 @@
-
-const { Sweet, SweetShop } = require('./sweetshop.js')
-
 describe('Sweet Class', () => {
     // Test valid sweet creation
     test('should create a valid sweet', () => {
@@ -67,4 +64,61 @@ describe('SweetShop Class', () => {
         expect(() => shop.deleteSweet(999)).toThrow('Sweet not found');
     });
 
+    // Test getting all sweets
+    test('should get all sweets', () => {
+        const shop = new SweetShop();
+        shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+        shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+        const sweets = shop.getAllSweets();
+        expect(sweets.length).toBe(2);
+    });
+
+    // Test getting a sweet by ID
+    test('should get specific sweet by ID', () => {
+        const shop = new SweetShop();
+        const sweet = shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+        const retrieved = shop.getSweet(sweet.id);
+        expect(retrieved.name).toBe('Kaju Katli');
+    });
+
+    // Test getting a non-existent sweet by ID throws error
+    test('should throw error for non-existent sweet ID', () => {
+        const shop = new SweetShop();
+        expect(() => shop.getSweet(999)).toThrow('Sweet not found');
+    });
+
+    // Test searching sweets by name
+    test('should search by name', () => {
+        const shop = new SweetShop();
+        shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+        shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+        shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 50);
+        const results = shop.searchByName('Kaju');
+        expect(results.length).toBe(1);
+        expect(results[0].name).toBe('Kaju Katli');
+    });
+
+    // Test searching sweets by category
+    test('should search by category', () => {
+        const shop = new SweetShop();
+        shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+        shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+        shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 50);
+        const results = shop.searchByCategory('Milk');
+        expect(results.length).toBe(1);
+        expect(results[0].name).toBe('Gulab Jamun');
+    });
+
+    // Test searching sweets by price range
+    test('should search by price range', () => {
+        const shop = new SweetShop();
+        shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+        shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+        shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 50);
+        const results = shop.searchByPriceRange(20, 40);
+        expect(results.length).toBe(1);
+        expect(results[0].name).toBe('Gajar Halwa');
+    });
+
+    
     });
