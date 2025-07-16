@@ -1,6 +1,4 @@
 
-
-// Simple test framework
 class TestRunner {
     constructor() {
         this.tests = [];
@@ -36,22 +34,22 @@ class TestRunner {
     }
 
     run() {
-        console.log('🧪 Running Sweet Shop Management System Tests...\n');
+        console.log(' Running Sweet Shop Management System Tests...\n');
         
         this.tests.forEach(({ description, testFunction }) => {
             try {
                 testFunction();
-                console.log(`✅ ${description}`);
+                console.log(`Passed ${description}`);
                 this.passed++;
             } catch (error) {
-                console.log(`❌ ${description}`);
+                console.log(`Failed ${description}`);
                 console.log(`   Error: ${error.message}`);
                 this.failed++;
             }
         });
 
-        console.log(`\n📊 Test Results: ${this.passed} passed, ${this.failed} failed`);
-        console.log(`📈 Success Rate: ${((this.passed / (this.passed + this.failed)) * 100).toFixed(1)}%`);
+        console.log(`\nTest Results: ${this.passed} passed, ${this.failed} failed`);
+        console.log(`Success Rate: ${((this.passed / (this.passed + this.failed)) * 100).toFixed(1)}%`);
     }
 }
 
@@ -102,6 +100,21 @@ runner.test('SweetShop - should throw error for invalid sweet data', () => {
     runner.assertThrows(() => shop.addSweet('Name', '', 10, 5), 'Invalid sweet data');
     runner.assertThrows(() => shop.addSweet('Name', 'Category', -10, 5), 'Invalid sweet data');
     runner.assertThrows(() => shop.addSweet('Name', 'Category', 10, -5), 'Invalid sweet data');
+});
+
+// Test Suite for SweetShop - Delete Sweets
+runner.test('SweetShop - should delete a sweet successfully', () => {
+    const shop = new SweetShop();
+    const sweet = shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+    const deleted = shop.deleteSweet(sweet.id);
+    
+    runner.assertEqual(deleted.name, 'Kaju Katli');
+    runner.assertThrows(() => shop.getSweet(sweet.id), 'Sweet not found');
+});
+
+runner.test('SweetShop - should throw error when deleting non-existent sweet', () => {
+    const shop = new SweetShop();
+    runner.assertThrows(() => shop.deleteSweet(999), 'Sweet not found');
 });
 
 // Run all tests
