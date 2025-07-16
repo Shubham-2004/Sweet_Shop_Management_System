@@ -1,0 +1,23 @@
+{
+  "name": "sweet_shop_management_system",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000S\u0000w\u0000e\u0000e\u0000t\u0000 \u0000S\u0000h\u0000o\u0000p\u0000 \u0000M\u0000a\u0000n\u0000a\u0000g\u0000e\u0000m\u0000e\u0000n\u0000t\u0000 \u0000S\u0000y\u0000s\u0000t\u0000e\u0000m\u0000\r\u0000 \u0000",
+  "main": "sweetshop.test.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shubham-2004/Sweet_Shop_Management_System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shubham-2004/Sweet_Shop_Management_System/issues"
+  },
+  "homepage": "https://github.com/Shubham-2004/Sweet_Shop_Management_System#readme",
+  "devDependencies": {
+    "jest": "^30.0.4"
+  }
+}
