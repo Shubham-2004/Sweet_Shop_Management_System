@@ -1,3 +1,4 @@
+
 describe('Sweet Class', () => {
     // Test valid sweet creation
     test('should create a valid sweet', () => {
@@ -120,5 +121,88 @@ describe('SweetShop Class', () => {
         expect(results[0].name).toBe('Gajar Halwa');
     });
 
-    
+    // Test sorting sweets by name ascending
+    test('should sort by name ascending', () => {
+        const shop = new SweetShop();
+        shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+        shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+        shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 50);
+        const sorted = shop.sortByName(true);
+        expect(sorted[0].name).toBe('Gajar Halwa');
+        expect(sorted[1].name).toBe('Gulab Jamun');
+        expect(sorted[2].name).toBe('Kaju Katli');
+    });
+
+    // Test sorting sweets by price ascending
+    test('should sort by price ascending', () => {
+        const shop = new SweetShop();
+        shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+        shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+        shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 50);
+        const sorted = shop.sortByPrice(true);
+        expect(sorted[0].price).toBe(10);
+        expect(sorted[1].price).toBe(30);
+        expect(sorted[2].price).toBe(50);
+    });
+
+    // Test purchasing sweets
+    test('should purchase sweets successfully', () => {
+        const shop = new SweetShop();
+        const sweet = shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+        const purchase = shop.purchaseSweet(sweet.id, 5);
+        expect(purchase.purchased).toBe(5);
+        expect(purchase.totalCost).toBe(250);
+        expect(sweet.quantity).toBe(15);
+    });
+
+    // Test purchasing more than available stock throws error
+    test('should throw error for insufficient stock', () => {
+        const shop = new SweetShop();
+        const sweet = shop.addSweet('Kaju Katli', 'Nut-Based', 50, 5);
+        expect(() => shop.purchaseSweet(sweet.id, 10)).toThrow('Insufficient stock');
+    });
+
+    // Test purchasing with invalid quantity throws error
+    test('should throw error for invalid purchase quantity', () => {
+        const shop = new SweetShop();
+        const sweet = shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20);
+        expect(() => shop.purchaseSweet(sweet.id, 0)).toThrow('Purchase quantity must be greater than 0');
+        expect(() => shop.purchaseSweet(sweet.id, -5)).toThrow('Purchase quantity must be greater than 0');
+    });
+
+    // Test restocking sweets
+    test('should restock sweets successfully', () => {
+        const shop = new SweetShop();
+        const sweet = shop.addSweet('Kaju Katli', 'Nut-Based', 50, 10);
+        const restocked = shop.restockSweet(sweet.id, 15);
+        expect(restocked.quantity).toBe(25);
+    });
+
+    // Test restocking with invalid quantity throws error
+    test('should throw error for invalid restock quantity', () => {
+        const shop = new SweetShop();
+        const sweet = shop.addSweet('Kaju Katli', 'Nut-Based', 50, 10);
+        expect(() => shop.restockSweet(sweet.id, 0)).toThrow('Restock quantity must be greater than 0');
+        expect(() => shop.restockSweet(sweet.id, -5)).toThrow('Restock quantity must be greater than 0');
+    });
+
+    // Test getting low stock sweets
+    test('should get low stock sweets', () => {
+        const shop = new SweetShop();
+        shop.addSweet('Kaju Katli', 'Nut-Based', 50, 3);
+        shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15);
+        shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 2);
+        const lowStock = shop.getLowStockSweets(5);
+        expect(lowStock.length).toBe(2);
+    });
+
+        // Test calculating total inventory value
+        test('should calculate total inventory value', () => {
+            const shop = new SweetShop();
+            shop.addSweet('Kaju Katli', 'Nut-Based', 50, 20); 
+            shop.addSweet('Gajar Halwa', 'Vegetable-Based', 30, 15); 
+            shop.addSweet('Gulab Jamun', 'Milk-Based', 10, 50); 
+            const totalValue = shop.getTotalInventoryValue();
+            expect(totalValue).toBe(1950);
+        });
     });
