@@ -1,4 +1,5 @@
 
+
 class Sweet {
     constructor(id, name, category, price, quantity) {
         if (!id || !name || !category || price < 0 || quantity < 0) {

@@ -1,4 +1,5 @@
 
+const { Sweet, SweetShop } = require('./sweetshop.js')
 class TestRunner {
     constructor() {
         this.tests = [];

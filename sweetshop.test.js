@@ -1,4 +1,5 @@
 
+const { Sweet, SweetShop } = require('./sweetshop.js')
 describe('Sweet Class', () => {
     // Test valid sweet creation
     test('should create a valid sweet', () => {
